@@ -14,17 +14,23 @@ public class Player : MonoBehaviour {
 // health variables
 	public Image[] hearts;
 	public int maxHealth;
-	int currentHealth;
+	public int currentHealth;
 
 	// Sword
 	public GameObject sword;
     public float trustPower;
     public bool canAttack;
-    
+
+
+    public bool iniFrames;
+    float iniTimer =1f;
+    SpriteRenderer sr;
 
 	void Start () {
         canMove = true;
         canAttack = true;
+        iniFrames = false;
+        sr = GetComponent<SpriteRenderer>();
 		anim=GetComponent<Animator>();
 		currentHealth=maxHealth;
 		getHealth();
@@ -47,6 +53,20 @@ public class Player : MonoBehaviour {
 		{
 			currentHealth=maxHealth;
 		}
+        if(iniFrames)
+        {
+            iniTimer -= Time.deltaTime;
+            int rn = Random.Range(0, 100);
+            if (rn < 50) sr.enabled = false;
+            if (rn >= 50) sr.enabled = true;
+            if(iniTimer<=0)
+            {
+                iniTimer = 1f;
+                iniFrames = false;
+                sr.enabled = true;
+            }
+
+        }
 		getHealth();
 		// Attack
 		if(Input.GetKeyDown(KeyCode.Space))
@@ -65,6 +85,8 @@ public class Player : MonoBehaviour {
 		{
 			hearts[i].gameObject.SetActive(true);
 		}
+
+
 	}
 
 void Attack()

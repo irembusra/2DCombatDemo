@@ -17,7 +17,7 @@ public class Crab : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        direction = 0;
+        direction = Random.Range(0, 3);
        // spriteRenderer.sprite = facingUp;
 	}
 	
@@ -69,6 +69,34 @@ public class Crab : MonoBehaviour {
             collision.gameObject.GetComponent<Sword>().CreateParticle();
             GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().canAttack = true;
             Destroy(collision.gameObject);
+        }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+       // Debug.Log("Collision enter");
+        if(collision.gameObject.tag=="Player")
+        {
+         //   Debug.Log("tag if state");
+            health--;
+            if(!collision.gameObject.GetComponent<Player>().iniFrames)
+            {
+                collision.gameObject.GetComponent<Player>().currentHealth--;
+                collision.gameObject.GetComponent<Player>().iniFrames = true;
+
+            }
+    
+            if(health<=0)
+            {
+                Destroy(gameObject);
+                Instantiate(particleEffect, transform.position, transform.rotation);
+            }
+           
+
+
+        }
+        if(collision.gameObject.tag=="Wall")
+        {
+            direction = Random.Range(0, 3);
         }
     }
 }
