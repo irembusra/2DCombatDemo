@@ -141,7 +141,9 @@ public class Dragon : MonoBehaviour {
         if (collision.gameObject.tag == "Wall")
         {
 
-            dir = Random.Range(0, 3);
+            dir--;
+            if (dir < 0)
+                dir = 3;
         
         }
     }

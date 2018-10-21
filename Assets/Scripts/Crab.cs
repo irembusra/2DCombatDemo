@@ -10,7 +10,7 @@ public class Crab : MonoBehaviour {
     SpriteRenderer spriteRenderer;
 
     int direction;
-    float timer = 1.5f;
+    float timer = 1f;
     public Sprite facingUp , facingDown , facingLeft, facingRight;
     public float speed;
 
@@ -96,7 +96,9 @@ public class Crab : MonoBehaviour {
         }
         if(collision.gameObject.tag=="Wall")
         {
-            direction = Random.Range(0, 3);
+            direction--;
+            if (direction < 0)
+                direction = 3;
         }
     }
 }

@@ -181,5 +181,12 @@ void Attack()
             collision.gameObject.GetComponent<Bullet>().CreateParticle();
             Destroy(collision.gameObject);
         }
+
+        if(collision.gameObject.tag =="Potion")
+        {
+            maxHealth++;
+            currentHealth = maxHealth;
+            Destroy(collision.gameObject);
+        }
     }
 }

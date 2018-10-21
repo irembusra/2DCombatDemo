@@ -7,6 +7,7 @@ TagManager:
   - Sword
   - Wall
   - Bullet
+  - Potion
   layers:
   - Default
   - TransparentFX
