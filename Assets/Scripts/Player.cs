@@ -168,4 +168,18 @@ void Attack()
 
 
 	}
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag=="Bullet")
+        {
+            if (!iniFrames)
+            {
+                currentHealth--;
+                iniFrames = true;
+            }
+            collision.gameObject.GetComponent<Bullet>().CreateParticle();
+            Destroy(collision.gameObject);
+        }
+    }
 }

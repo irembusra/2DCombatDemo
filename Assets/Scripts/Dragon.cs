@@ -9,10 +9,18 @@ public class Dragon : MonoBehaviour {
     public int dir;
     float timer = .7f;
     public int health;
+    bool canAttack;
+    float attackTimer=2f;
+
+    public GameObject projecTile;
+    public float thrustPower;
+
+    public GameObject deathParticle;
 	// Use this for initialization
 	void Start () {
         anim = GetComponent<Animator>();
         dir = Random.Range(0, 3);
+        canAttack = false;
 
 	}
 	
@@ -26,7 +34,48 @@ public class Dragon : MonoBehaviour {
 
         }
         Movement();
-	}
+       
+        attackTimer -= Time.deltaTime;
+        if(attackTimer <= 0)
+        {
+            attackTimer = 2f;
+            canAttack = true;
+        }
+        Attack();
+    }
+    void Attack()
+    {
+        if (!canAttack)
+            return;
+        canAttack = false;
+       if(dir==0)
+        {
+            GameObject newProjectTile = Instantiate(projecTile, transform.position, transform.rotation);
+            newProjectTile.GetComponent<Rigidbody2D>().AddForce(Vector2.up * thrustPower);
+        }
+        else if(dir==1)
+        {
+            GameObject newProjectTile = Instantiate(projecTile, transform.position, transform.rotation);
+            newProjectTile.GetComponent<Rigidbody2D>().AddForce(Vector2.right * -thrustPower);
+        }
+        else if (dir == 2)
+        {
+            GameObject newProjectTile = Instantiate(projecTile, transform.position, transform.rotation);
+            newProjectTile.GetComponent<Rigidbody2D>().AddForce(Vector2.up * -thrustPower);
+        }
+        else if(dir==3)
+        {
+            GameObject newProjectTile = Instantiate(projecTile, transform.position, transform.rotation);
+            newProjectTile.GetComponent<Rigidbody2D>().AddForce(Vector2.right * thrustPower);
+        }
+    
+                
+            
+            
+
+        
+          
+    }
     void Movement()
     {
         switch (dir)
@@ -59,9 +108,41 @@ public class Dragon : MonoBehaviour {
             Destroy(collision.gameObject);
             if (health <= 0)
             {
+                Instantiate(deathParticle, transform.position, transform.rotation);
                 Destroy(gameObject);
             }
         }
        
     }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Debug.Log("Collision enter");
+        if (collision.gameObject.tag == "Player")
+        {
+            //   Debug.Log("tag if state");
+            health--;
+            if (!collision.gameObject.GetComponent<Player>().iniFrames)
+            {
+                collision.gameObject.GetComponent<Player>().currentHealth--;
+                collision.gameObject.GetComponent<Player>().iniFrames = true;
+
+            }
+
+            if (health <= 0)
+            {
+                Destroy(gameObject);
+                Instantiate(deathParticle, transform.position, transform.rotation);
+            }
+
+
+
+        }
+        if (collision.gameObject.tag == "Wall")
+        {
+
+            dir = Random.Range(0, 3);
+        
+        }
+    }
 }
+
