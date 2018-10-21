@@ -7,6 +7,7 @@ public class Player : MonoBehaviour {
 
 // movement varibles
 	public float speed;
+    public bool canMove;
 
 	Animator anim;
 
@@ -17,8 +18,13 @@ public class Player : MonoBehaviour {
 
 	// Sword
 	public GameObject sword;
+    public float trustPower;
+    public bool canAttack;
+    
 
 	void Start () {
+        canMove = true;
+        canAttack = true;
 		anim=GetComponent<Animator>();
 		currentHealth=maxHealth;
 		getHealth();
@@ -63,20 +69,51 @@ public class Player : MonoBehaviour {
 
 void Attack()
 {
+        if (!canAttack)
+            return;
+        canAttack = false;
+        canMove = false;
 	GameObject newSword= Instantiate(sword , transform.position , sword.transform.rotation);
+        if (currentHealth == maxHealth)
+        {
+            newSword.GetComponent<Sword>().special = true;
+            canMove = true;
+            trustPower = 700;
+
+        }
+       
 	int swordDir= anim.GetInteger("dir");
+        anim.SetInteger("attackDir", swordDir);
 	if(swordDir==0)
-	newSword.transform.Rotate(0,0,0);
+        {
+            newSword.transform.Rotate(0, 0, 0);
+            newSword.GetComponent<Rigidbody2D>().AddForce(Vector2.up * trustPower);
+        }
+	
 	else if(swordDir==1)
-	newSword.transform.Rotate(0,0,180);
+        {
+            newSword.transform.Rotate(0, 0, 180);
+            newSword.GetComponent<Rigidbody2D>().AddForce(Vector2.up * -trustPower);
+        }
+	
 	else if(swordDir==2)
-	newSword.transform.Rotate(0,0,90);
+        {
+            newSword.transform.Rotate(0, 0, 90);
+            newSword.GetComponent<Rigidbody2D>().AddForce(Vector2.right * -trustPower);
+        }
+	
 	else if(swordDir==3)
-	newSword.transform.Rotate(0,0,-90);
+        {
+            newSword.transform.Rotate(0, 0, -90);
+            newSword.GetComponent<Rigidbody2D>().AddForce(Vector2.right * trustPower);
+        }
+	
 
 }
 	void Movement()
 	{
+        if (!canMove)
+            return;
 		if(Input.GetKey(KeyCode.W))
 		{
 			transform.Translate(0,speed * Time.deltaTime , 0);
