@@ -12,6 +12,7 @@ public class LevelToLoad : MonoBehaviour {
     {
         if(collision.gameObject.tag == "Player")
         {
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().SaveGame();
             SceneManager.LoadScene(index);
         }
     }

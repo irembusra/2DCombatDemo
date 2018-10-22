@@ -35,6 +35,10 @@ public class Player : MonoBehaviour
         iniFrames = false;
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        if(PlayerPrefs.HasKey("maxHealth"))
+        {
+            LoadGame();
+        }else
         currentHealth = maxHealth;
         getHealth();
     }
@@ -201,5 +205,19 @@ public class Player : MonoBehaviour
 
         }
     }
+
+    public void SaveGame()
+    {
+        PlayerPrefs.SetInt("maxHealth", maxHealth);
+        PlayerPrefs.SetInt("currentHealth", currentHealth);
+
+    }
+    void LoadGame()
+    {
+        maxHealth = PlayerPrefs.GetInt("maxHealth");
+        currentHealth = PlayerPrefs.GetInt("currentHealth");
+    }
+
+
 }
 
