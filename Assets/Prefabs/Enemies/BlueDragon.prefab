@@ -120,7 +120,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   dir: 0
-  health: 1
+  health: 6
   projecTile: {fileID: 1695346399568576, guid: 0695a91071520f84480ab3009fa6cbd4, type: 2}
   thrustPower: 1000
   deathParticle: {fileID: 1245694239966764, guid: d9d2a87545fbbb34993291f1a79965ba,

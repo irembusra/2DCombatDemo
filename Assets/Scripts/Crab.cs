@@ -14,11 +14,14 @@ public class Crab : MonoBehaviour {
     public Sprite facingUp , facingDown , facingLeft, facingRight;
     public float speed;
 
+    bool canChange;
+    float changeTimer = .2f;
 	// Use this for initialization
 	void Start () {
         spriteRenderer = GetComponent<SpriteRenderer>();
         direction = Random.Range(0, 3);
-       // spriteRenderer.sprite = facingUp;
+        // spriteRenderer.sprite = facingUp;
+        canChange = false;
 	}
 	
 	// Update is called once per frame
@@ -30,6 +33,15 @@ public class Crab : MonoBehaviour {
             timer = 1.5f;
         }
         Movement();
+        if(canChange)
+        {
+            changeTimer -= Time.deltaTime;
+            if(changeTimer<=0)
+            {
+                changeTimer = .2f;
+                canChange = false;
+            }
+        }
 	}
     void Movement()
     {
@@ -96,9 +108,19 @@ public class Crab : MonoBehaviour {
         }
         if(collision.gameObject.tag=="Wall")
         {
-            direction--;
-            if (direction < 0)
+            if (canChange)
+                return;
+
+            if (direction == 0)
                 direction = 3;
+            else if (direction == 3)
+                direction = 0;
+            else if (direction == 1)
+                direction = 2;
+            else if (direction == 2)
+                direction = 1;
+
+            canChange = true;
         }
     }
 }
