@@ -1,0 +1,220 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Wizzard : MonoBehaviour {
+    public float speed;
+    Animator anim;
+    public int dir;
+    float timer = 1f;
+    public int health;
+    bool canAttack;
+    float attackTimer = 2f;
+    float specialTimer=.5f;
+
+    bool canChange;
+    float changeTimer = .2f;
+
+    public GameObject projecTile;
+    public float thrustPower;
+
+    public GameObject deathParticle;
+    // Use this for initialization
+    void Start()
+    {
+        anim = GetComponent<Animator>();
+      
+        canAttack = false;
+        canChange = false;
+
+    }
+
+    // Update is called once per frame
+    void Update()   
+    {
+        specialTimer -= Time.deltaTime;
+        if(specialTimer <=0)
+        {
+            SpecialAttack();
+            SpecialAttack();
+            specialTimer = .5f;
+        }
+        timer -= Time.deltaTime;
+        if (timer <= 0)
+        {
+            timer = 1.2f;
+            switch (dir)
+            {
+                case  1:
+                    dir =  0 ;
+                    break;
+                case  2:
+                    dir =   1;
+                    break;
+                case 3 :
+                    dir =  2 ;
+                    break;
+
+                case 0:
+                    dir =   3;
+                    break;
+                default:
+                    dir = 1;
+                    break;
+            }
+
+        }
+        Movement();
+        if (canChange)
+        {
+            changeTimer -= Time.deltaTime;
+            if (changeTimer <= 0)
+            {
+                changeTimer = .2f;
+                canChange = false;
+            }
+        }
+
+        attackTimer -= Time.deltaTime;
+        if (attackTimer <= 0)
+        {
+            attackTimer = 2f;
+            canAttack = true;
+        }
+        Attack();
+    }
+    void Attack()
+    {
+        if (!canAttack)
+            return;
+        canAttack = false;
+        if (dir == 0)
+        {
+            GameObject newProjectTile = Instantiate(projecTile, transform.position, transform.rotation);
+            newProjectTile.GetComponent<Rigidbody2D>().AddForce(Vector2.up * thrustPower);
+        }
+        else if (dir == 1)
+        {
+            GameObject newProjectTile = Instantiate(projecTile, transform.position, transform.rotation);
+            newProjectTile.GetComponent<Rigidbody2D>().AddForce(Vector2.right * -thrustPower);
+        }
+        else if (dir == 2)
+        {
+            GameObject newProjectTile = Instantiate(projecTile, transform.position, transform.rotation);
+            newProjectTile.GetComponent<Rigidbody2D>().AddForce(Vector2.up * -thrustPower);
+        }
+        else if (dir == 3)
+        {
+            GameObject newProjectTile = Instantiate(projecTile, transform.position, transform.rotation);
+            newProjectTile.GetComponent<Rigidbody2D>().AddForce(Vector2.right * thrustPower);
+        }
+
+
+
+
+
+
+
+    }
+    void Movement()
+    {
+        switch (dir)
+        {
+            case 0:
+                transform.Translate(0, speed * Time.deltaTime, 0);
+                anim.SetInteger("dir", dir);
+                break;
+            case 1:
+                transform.Translate(-speed * Time.deltaTime, 0, 0);
+                anim.SetInteger("dir", dir);
+                break;
+            case 2:
+                transform.Translate(0, -speed * Time.deltaTime, 0);
+                anim.SetInteger("dir", dir);
+                break;
+            case 3:
+                transform.Translate(speed * Time.deltaTime, 0, 0);
+                anim.SetInteger("dir", dir);
+                break;
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Sword")
+        {
+            health--;
+            collision.gameObject.GetComponent<Sword>().CreateParticle();
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().canAttack = true;
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().canMove = true;
+            Destroy(collision.gameObject);
+            if (health <= 0)
+            {
+                Instantiate(deathParticle, transform.position, transform.rotation);
+                Destroy(gameObject);
+            }
+        }
+
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Debug.Log("Collision enter");
+        if (collision.gameObject.tag == "Player")
+        {
+            //   Debug.Log("tag if state");
+            health--;
+            if (!collision.gameObject.GetComponent<Player>().iniFrames)
+            {
+                collision.gameObject.GetComponent<Player>().currentHealth--;
+                collision.gameObject.GetComponent<Player>().iniFrames = true;
+
+            }
+
+            if (health <= 0)
+            {
+                Destroy(gameObject);
+                Instantiate(deathParticle, transform.position, transform.rotation);
+            }
+
+
+
+        }
+        if (collision.gameObject.tag == "Wall")
+        {
+
+            if (collision.gameObject.tag == "Wall")
+            {
+                if (canChange)
+                    return;
+
+                if (dir == 0)
+                    dir = 2;
+                else if (dir == 2)
+                    dir = 0;
+                else if (dir == 1)
+                    dir = 3;
+                else if (dir == 3)
+                    dir = 1;
+
+                canChange = true;
+            }
+
+        }
+    }
+
+    void SpecialAttack()
+    {
+        GameObject newProjecTile = Instantiate(projecTile, transform.position, transform.rotation);
+        int randomDir = Random.Range(0, 3);
+        switch(randomDir)
+        {
+            case 0: newProjecTile.GetComponent<Rigidbody2D>().AddForce(Vector2.right * thrustPower);
+                break;
+            case 1: newProjecTile.GetComponent<Rigidbody2D>().AddForce(Vector2.up * thrustPower);
+                break;
+            case 2: newProjecTile.GetComponent<Rigidbody2D>().AddForce(Vector2.right * -thrustPower);
+                break;
+            case 3: newProjecTile.GetComponent<Rigidbody2D>().AddForce(Vector3.up * -thrustPower);
+                break;
+        }
+    }
+}

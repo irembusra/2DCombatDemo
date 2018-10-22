@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     public bool iniFrames;
     float iniTimer = 1f;
     SpriteRenderer sr;
-    public Camera cam;
+   
 
     void Start()
     {
@@ -41,7 +41,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        cam.transform.position=new Vector3(transform.position.x, transform.position.y,transform.position.z -5);
+     
         Movement();
 
         // healthCheck(Damage)
