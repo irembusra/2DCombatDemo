@@ -185,6 +185,34 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b7b635458bda5142852c99a079020fd, type: 2}
   m_IsPrefabAsset: 0
+--- !u!1 &600576947
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 600576948}
+  m_Layer: 0
+  m_Name: rewardPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &600576948
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 600576947}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &604277506
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,6 +537,7 @@ GameObject:
   - component: {fileID: 691347112}
   - component: {fileID: 691347111}
   - component: {fileID: 691347114}
+  - component: {fileID: 691347115}
   m_Layer: 0
   m_Name: Wizzard
   m_TagString: Untagged
@@ -604,13 +633,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa9513a7443f01540b43858fbde1333d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rewardPosition: {fileID: 600576948}
+  reward: {fileID: 1634381772957466, guid: 74e412e98061375408be071686ccc34f, type: 2}
   speed: 5
   dir: 0
   health: 5
   projecTile: {fileID: 1695346399568576, guid: 0695a91071520f84480ab3009fa6cbd4, type: 2}
   thrustPower: 1000
-  deathParticle: {fileID: 1245694239966764, guid: d9d2a87545fbbb34993291f1a79965ba,
+  deathParticle: {fileID: 1726153208573944, guid: ac005a522a44ef649a48191b20c97ac0,
     type: 2}
+--- !u!61 &691347115
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 691347110}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.41, y: 0.61}
+    newSize: {x: 0.41, y: 0.61}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.41, y: 0.61}
+  m_EdgeRadius: 0
 --- !u!1 &696512336
 GameObject:
   m_ObjectHideFlags: 0

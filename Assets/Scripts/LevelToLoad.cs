@@ -10,9 +10,11 @@ public class LevelToLoad : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log("Trigger");
         if(collision.gameObject.tag == "Player")
         {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().SaveGame();
+            Debug.Log("Tag");
+           GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().SaveGame();
             SceneManager.LoadScene(index);
         }
     }

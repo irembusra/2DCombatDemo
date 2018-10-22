@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Wizzard : MonoBehaviour {
+
+    public Transform rewardPosition;
+    public GameObject reward;
     public float speed;
     Animator anim;
     public int dir;
@@ -150,6 +153,7 @@ public class Wizzard : MonoBehaviour {
             if (health <= 0)
             {
                 Instantiate(deathParticle, transform.position, transform.rotation);
+                Instantiate(reward, rewardPosition.position, reward.transform.rotation);
                 Destroy(gameObject);
             }
         }
@@ -161,7 +165,7 @@ public class Wizzard : MonoBehaviour {
         if (collision.gameObject.tag == "Player")
         {
             //   Debug.Log("tag if state");
-            health--;
+        
             if (!collision.gameObject.GetComponent<Player>().iniFrames)
             {
                 collision.gameObject.GetComponent<Player>().currentHealth--;
